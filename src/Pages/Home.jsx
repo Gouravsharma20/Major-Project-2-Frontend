@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
-    const {lead} = useContext(LeadContext)
+    const {lead,leadLoading,leadError} = useContext(LeadContext)
 
 
     
@@ -36,13 +36,13 @@ function leadManagement() {
     navigate("/SideBarLeads")
 }
 
-// if (leadLoading) {
-//     return <h2>loading leads ...</h2>
-// }
+if (leadLoading) {
+    return <h2>loading leads ...</h2>
+}
 
-// if (leadError) {
-//     return <h2>error loading leads</h2>
-// }
+if (leadError) {
+    return <h2>error loading leads</h2>
+}
 
 
     return (

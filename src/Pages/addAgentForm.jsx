@@ -32,7 +32,7 @@ export default function AddagentForm() {
     const [email,setEmail] = useState("")
 
     const handleSubmit = async () => {
-        setAgent(true)
+        setAgentLoading(true)
         try {
             const newAgent = await addAgent({name,email}) 
             setAgent(newAgent)
@@ -43,7 +43,7 @@ export default function AddagentForm() {
             console.log(err)
             toast.error("Failed to add new agent")
         } finally {
-            setAgent(false)
+            setAgentLoading(false)
         }
     }
 

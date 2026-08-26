@@ -1,6 +1,81 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { toast,ToastContainer } from "react-toastify";
+import LeadContext from "../Context/LeadContext";
+
+
+
+async function addLead(leadData) {
+        const addLeadresponse = await fetch("https://major-project-2-backend-ecru.vercel.app/leads/createLead",{
+            method:"POST",
+            headers:{
+                "content-Type":"application/json"
+            },
+            body:JSON.stringify(leadData)
+        })
+        if(!addLeadresponse.ok) {
+            throw new Error(`Failed to add new Lead : ${addLeadresponse.status}`)
+        }
+        const leadToAdd = await addLeadresponse.json()
+        return leadToAdd
+    }
+
+
 export default function LeadForm() {
+    const {salesAgent:salesAgentList,salesAgentLoading} = useContext(LeadContext)
+    const [lead,setLead] = useState(null)
+    const [leadFormLoading,setLeadFormLeading] = useState(false)
+    const [leadName,setLeadName] = useState("")
+    // const [salesAgent,setSalesAgent] = useState("")
+    // const [leadSource,setLeadSource] = useState("")
+    const [selectSalesAgent,setSelectedSalesAgent] = useState("")
+    const [leadSource,setLeadSource] = useState("")
+    const [leadStatus,setLeadStatus] = useState("")
+    const [leadPriority,setLeadPriority] = useState("")
+    const [timeToClose,settimeToClose] = useState("")
+
+    const addNewLeadHandeler = async()=> {
+        setLeadFormLeading(true)
+        try {
+            const newLead = await addLead({
+                name:leadName,
+                salesAgent:selectSalesAgent,
+                source:leadSource,
+                status:leadStatus,
+                priority:leadPriority,
+                timeToClose:Number(timeToClose)
+            })
+            setLead(newLead)
+            setLeadName("")
+            setSelectedSalesAgent("")
+            // setSalesAgent("")
+            setLeadSource("")
+            setLeadStatus("")
+            setLeadPriority("")
+            settimeToClose("")
+            toast.success("New lead added to database successfully")
+        } catch(err) {
+            console.log(err)
+            toast.error("failed to add new lead")
+        } finally{
+            setLeadFormLeading(false)
+        }
+    }
+
+    
+    // const salesAgentNames = salesAgent.map((agent)=>{
+    //     return (
+    //         <div>agent name : {agent.name}</div>
+    //     )
+    // })
+
+    const salesAgentOptions = salesAgentList.map((agent) => (
+        <option key={agent._id} value={agent._id}>{agent.name}</option>
+    ));
+
+
+    
     return (
         <div className="row">
             <div className="col-3 left-sidebar">
@@ -9,41 +84,55 @@ export default function LeadForm() {
             </div>
             <div className="col main-home">
                 <h2>Lead details</h2>
-                <h4>Lead name : <input type="string" placeholder="Lead Name"/></h4>
-                <h4>Sales Agent : <input type="string" placeholder="Sales Agent"/></h4>
-                <h4>Lead Source : <input type="string" placeholder="Lead Source"/></h4>
-                <h4>Lead Status : <input type="string" placeholder="Lead Status"/></h4>
-                <h4>Priority : <input type="string" placeholder="Priority"/></h4>
-                <h4>Time to Close : <input type="string" placeholder="Time to close"/></h4>
+                <h4>Lead name : <input type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} />
+                </h4>
+                <h4>Sales Agent : <select value={selectSalesAgent} onChange={(e)=>setSelectedSalesAgent(e.target.value)}>
+                    <option value="" disabled>select sales agaent</option>
+                    {salesAgentLoading? (
+                        <option disabled>loading agents...</option>
+                    ) : (
+                        salesAgentOptions
+                    )
+                }
+                    </select>
+
+                </h4>
+                <h4>Lead Source : <select  value={leadSource} onChange={(e)=>setLeadSource(e.target.value)}>
+                    <option value="" disabled>select lead source</option>
+                    <option value="Website">Website</option>
+                    <option value="Cold Call">Cold Call</option>
+                    <option value="Advertisement">Advertisement</option>
+                    <option value="Email">Email</option>
+                    <option value="Other">Other</option>
+                    </select>
+                </h4>
+
+
+                <h4>Lead Status : <select value={leadStatus} onChange={(e)=>setLeadStatus(e.target.value)}>
+                    <option value="" disabled>Select lead status</option>
+                    <option value="New">New</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Qualified">Qualified</option>
+                    <option value="Proposal Sent">Proposal Sent</option>
+                    <option value="Closed">Closed</option>
+                </select></h4>
+
+
+
+                <h4>Priority : <select value={leadPriority} onChange={(e)=>setLeadPriority(e.target.value)}>
+                    <option value="" disabled>Select lead priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select></h4>
+
+
+                <h4>Time to Close : <input type="text" placeholder="Time to close" value={timeToClose} onChange={(e)=>settimeToClose(e.target.value)}/></h4>
                 <hr/>
-                 <button className="btn-sm">
-                Edit lead details
+                 <button onClick={addNewLeadHandeler} className="btn-sm">
+                Add lead details
             </button>
-
-            <hr/>
-
-                <h2>Common Section</h2>
-                <hr/>
-                <h4>author: date and time</h4>
-                <h4>Comment: comment</h4>
-
-            <hr/>
-
-            <div className="d-flex flex-column">
-                <input type="text" placeholder="add new comment" />
-                <button>Submit comment</button>
             </div>
-
-
-
-
-            </div>
-           
-
-            
-
-            
-
         </div>
     )
 }
