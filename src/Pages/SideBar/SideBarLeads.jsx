@@ -19,7 +19,7 @@ export default function SideBarLeads() {
             </div>
 
             <div>
-                <h1 className="mt-0">mai hu saarey key sarey Leads</h1>
+                <h1 className="mt-0">All leads Data</h1>
                 {lead.map((lead)=>(<div key={lead._id}><h2>Name: {lead.name}</h2></div>))}
 
             </div>
