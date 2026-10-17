@@ -1,49 +1,49 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 
 import LeadForm from './LeadForm';
 
-import {useContext,useEffect} from 'react'
+import {useContext} from 'react'
 
 import LeadContext from '../Context/LeadContext';
 
-import { useNavigate } from 'react-router-dom';
+
 
 
 export default function Home() {
     const {lead,leadLoading,leadError} = useContext(LeadContext)
 
-
-    
-
+    // usinglead from lead context only but lead is not updateing instantly , lead quantity 
     const navigate = useNavigate()
 
-    async function newLead() {
-        navigate("/")
-
+    if (leadLoading) {
+        return <h2>loading leads ...</h2>
     }
 
-    function goToNewLead() {
-    navigate("/newLeads")
-}
+    if (leadError) {
+        return <h2>error loading leads</h2>
+    }
+
+    function goToContractedLead() {
+        navigate("/contractedLeads")
+    }
+
+function goToQualifiedLead() {
+        navigate("/contractedLeads")
+    }
+
+function goToProposalSentLead() {
+        navigate("/contractedLeads")
+    }
 
 
-function goToContractedLead() {
-    navigate("/contractedLeads")
-}
+function goToClosedLead() {
+        navigate("/contractedLeads")
+    }
 
 function leadManagement() {
-    navigate("/SideBarLeads")
-}
-
-if (leadLoading) {
-    return <h2>loading leads ...</h2>
-}
-
-if (leadError) {
-    return <h2>error loading leads</h2>
-}
-
+        navigate("/SideBarLeads")
+    }
 
     return (
         <div className='container-fluid'>
@@ -79,9 +79,17 @@ if (leadError) {
                         <div>New:[{lead.filter((lead)=>lead.status === "New").length}] Leads</div>
                         <div>Contacted:[{lead.filter((lead)=>lead.status === "Contacted").length}] Leads</div>
                         <div>Qualified:[{lead.filter((lead)=>lead.status === "Qualified").length}] Leads</div>
+                        <div>Proposal Sent:[{lead.filter((lead)=>lead.status === "Proposal Sent").length}] Leads</div>
+                        <div>Closed:[{lead.filter((lead)=>lead.status === "Closed").length}] Leads</div>
                     </div>
                     <div>
-                        <p style={{border:"2px solid black", padding:"8px", color:"red"}}>quick filter : <button onClick={goToNewLead}>[New]</button> <button onClick={goToContractedLead}>[Contracted]</button></p>
+                        <p style={{border:"2px solid black", padding:"8px", color:"red"}}>
+                            quick filter :
+                            <button onClick={goToNewLead}>[New]</button>
+                            <button onClick={goToContractedLead}>[Contracted]</button>
+                            <button onClick={goToQualifiedLead}>[Qualified]</button>
+                            <button onClick={goToProposalSentLead}>[Proposal Sent]</button>
+                            <button onClick={goToClosedLead}>[Closed]</button> </p>
                         <Link to={"/LeadForm"}>add new lead</Link>
                     </div>
                 </div>
@@ -90,4 +98,21 @@ if (leadError) {
         </div>
             
     )
+
+    async function newLead() {
+        navigate("/")
+
+    }
+
+    function goToNewLead() {
+    navigate("/newLeads")
+    
+}
+
+
+
+
+
+
+
 }

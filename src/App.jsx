@@ -32,7 +32,7 @@ import LeadForm from './Pages/LeadForm';
 import NewLead from './Pages/NewLead';
 
 import ContractedLead from './Pages/ContractedLead';
-import AllLeads from './Pages/SideBar/SideBarLeads';
+// import AllLeads from './Pages/SideBar/SideBarLeads';
 
 
 
@@ -142,6 +142,38 @@ function App() {
     allSalesAgent()
   },[])
 
+
+
+
+  ////////////////////////////////////////
+
+  // a function for update lead in list 
+
+  // lead is an array of all leads now in get lead by id if any one lead is updated it should get updated in leads as well , so that our leads list is always be the list of all edited leads, 
+
+  // in short prev list is the list of all the list elements , and updatedlead is the singe lead which is updated just now 
+
+  // so we are comparing it with updated lead if leads match , we are comparing them 
+
+  
+
+
+function addLeadToList(newLead) {
+  setLead(prevList => {
+    const alreadyExist = prevList.some(leadItem => leadItem._id === newLead._id)
+    if (alreadyExist) {
+      return prevList
+    }
+    return [newLead,...prevList]
+  }
+  )
+}
+
+
+function updateLeadInList(updatedLead) {
+    setLead(prevList => prevList.map(leadItem => leadItem._id === updatedLead._id ? {...leadItem, ...updatedLead} : leadItem))   
+}
+
  
 
 
@@ -151,7 +183,11 @@ function App() {
       leadLoading,
       salesAgent,
       salesAgentLoading,
-      leadError
+      leadError,
+      updateLeadInList,
+      setSalesAgent,
+      setSalesLoading,
+      addLeadToList
       }}>
       <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">
@@ -163,6 +199,10 @@ function App() {
         <Route path='/LeadForm' element={<LeadForm/>}/>
         <Route path='/newLeads' element={<NewLead/>} />
         <Route path='/contractedLeads' element={<ContractedLead/>}/>
+        {/* <Route path='/newLeads' element={<NewLead/>} />
+        <Route path='/newLeads' element={<NewLead/>} />
+        <Route path='/newLeads' element={<NewLead/>} />
+        <Route path='/newLeads' element={<NewLead/>} /> */}
         <Route path='/allLeads' element={<SideBarLeads/>}/>
         <Route path='/leadById/:id' element={<LeadByIdDetails/>}/>
         <Route path='/sales' element={<SideBarSales/>}/>
@@ -170,7 +210,6 @@ function App() {
         <Route path='/agent/addAgent' element={<AddagentForm/>}/>
         <Route path='/reports' element={<SideBarReports/>}/>
         <Route path='/settings' element={<SideBarSettings/>}/>
-        
       </Routes>
       </main>
       <Footer/>

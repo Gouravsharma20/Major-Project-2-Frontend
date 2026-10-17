@@ -1,15 +1,21 @@
 import { useState } from "react"
 
+import { useContext } from "react";
+import LeadContext from "../Context/LeadContext";
+
 import { toast, ToastContainer } from "react-toastify";
+
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 async function addAgent(agentData) {
+    
     const response = await fetch("https://major-project-2-backend-ecru.vercel.app/agent/addAgent",{
         method:"POST",
         headers:{
-            "content-Type":"application/json"
+            "Content-Type":"application/json"
         },
         body:JSON.stringify(agentData)
     });
@@ -19,6 +25,7 @@ async function addAgent(agentData) {
     }
 
     const agentToAdd = await response.json()
+    console.log(agentToAdd)
     return agentToAdd
 
 
@@ -26,24 +33,30 @@ async function addAgent(agentData) {
 
 
 export default function AddagentForm() {
-    const [agent,setAgent] = useState(null)
-    const [agentLoading,setAgentLoading] = useState(true)
+    const navigate = useNavigate()
+    const {setSalesLoading,setSalesAgent} = useContext(LeadContext)
+    // const [agent,setAgent] = useState(null)
+    // const [agentLoading,setAgentLoading] = useState(true)
     const [name,setName] = useState("")
     const [email,setEmail] = useState("")
 
+   
+
     const handleSubmit = async () => {
-        setAgentLoading(true)
+        
+        setSalesLoading(true)
         try {
-            const newAgent = await addAgent({name,email}) 
-            setAgent(newAgent)
+            const {addedAgent} = await addAgent({name,email}) 
+            setSalesAgent(prev => [...prev,addedAgent])
             setName("")
             setEmail("")
             toast.success("New agent added to database successfully")
+            navigate("/agents")
         } catch(err) {
             console.log(err)
             toast.error("Failed to add new agent")
         } finally {
-            setAgentLoading(false)
+            setSalesLoading(false)
         }
     }
 

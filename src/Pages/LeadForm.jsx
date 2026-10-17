@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { toast,ToastContainer } from "react-toastify";
 import LeadContext from "../Context/LeadContext";
 
+import { useNavigate } from "react-router-dom";
+
 
 
 async function addLead(leadData) {
@@ -23,8 +25,10 @@ async function addLead(leadData) {
 
 
 export default function LeadForm() {
-    const {salesAgent:salesAgentList,salesAgentLoading} = useContext(LeadContext)
-    const [lead,setLead] = useState(null)
+    const navigate = useNavigate()
+    const {salesAgent:salesAgentList,salesAgentLoading,addLeadToList} = useContext(LeadContext)
+    // const [lead,setLead] = useState(null)
+    // use lead form the context
     const [leadFormLoading,setLeadFormLeading] = useState(false)
     const [leadName,setLeadName] = useState("")
     // const [salesAgent,setSalesAgent] = useState("")
@@ -35,10 +39,14 @@ export default function LeadForm() {
     const [leadPriority,setLeadPriority] = useState("")
     const [timeToClose,settimeToClose] = useState("")
 
-    const addNewLeadHandeler = async()=> {
+    const addNewLeadHandeler = async () => {
+        if (!leadName || !selectSalesAgent || !leadSource || !leadStatus || !leadPriority || !timeToClose) {
+            toast.error("Please fill all the fields")
+            return
+        }
         setLeadFormLeading(true)
         try {
-            const newLead = await addLead({
+            const response = await addLead({
                 name:leadName,
                 salesAgent:selectSalesAgent,
                 source:leadSource,
@@ -46,7 +54,7 @@ export default function LeadForm() {
                 priority:leadPriority,
                 timeToClose:Number(timeToClose)
             })
-            setLead(newLead)
+            addLeadToList(response.newlyAddedLead);
             setLeadName("")
             setSelectedSalesAgent("")
             // setSalesAgent("")
@@ -55,6 +63,7 @@ export default function LeadForm() {
             setLeadPriority("")
             settimeToClose("")
             toast.success("New lead added to database successfully")
+            navigate("/")
         } catch(err) {
             console.log(err)
             toast.error("failed to add new lead")
@@ -73,6 +82,9 @@ export default function LeadForm() {
     const salesAgentOptions = salesAgentList.map((agent) => (
         <option key={agent._id} value={agent._id}>{agent.name}</option>
     ));
+
+
+       
 
 
     
@@ -129,8 +141,8 @@ export default function LeadForm() {
 
                 <h4>Time to Close : <input type="text" placeholder="Time to close" value={timeToClose} onChange={(e)=>settimeToClose(e.target.value)}/></h4>
                 <hr/>
-                 <button onClick={addNewLeadHandeler} className="btn-sm">
-                Add lead details
+                 <button onClick={addNewLeadHandeler} className="btn-sm" disabled={leadFormLoading}>
+                {leadFormLoading ? "Adding..." : "Add lead details"}
             </button>
             </div>
         </div>

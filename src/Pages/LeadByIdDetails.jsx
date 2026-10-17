@@ -1,17 +1,23 @@
 import { useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext } from 'react'
 import { Link } from "react-router-dom";
 
 import {toast} from 'react-toastify'
 
 
+import LeadContext from '../Context/LeadContext'
+
+
+
+
+
 
 export default function LeadByIdDetails() {
+    const { updateLeadInList } = useContext(LeadContext)
     const { id } = useParams()
     const [lead, setLead] = useState(null)   
     const [loading, setLoading] = useState(true)   
     const [error, setError] = useState(false)
-
     
     const [isEditing,setIsEditing] = useState(false)
     const [editLead,setEditLead] = useState(null)
@@ -84,7 +90,9 @@ export default function LeadByIdDetails() {
             )
             if (editLeadResponse.ok) {
                 const data = await editLeadResponse.json()
-                setLead(data.updatedLead ?? {...lead,...editLead})
+                const merged = data.updatedLead ?? {...lead,...editLead}
+                setLead(merged)
+                updateLeadInList(merged)
                 setIsEditing(false)
                 toast.success("lead updated successfully")
             } else {

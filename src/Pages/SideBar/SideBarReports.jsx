@@ -47,7 +47,7 @@ export default function SideBarReport() {
             <div>
             <h2>Report overview</h2>
             <div> Total Leads closed and in Pipeline : Closed leads : [ {closedLeadLength} : {closedLeadLength > 0 ? closedLeads.map((lead)=>{return <p>{lead.name}</p>}):"no closed leads found"} ].   and   leads in pipeline : {leadsInPipelineLength}</div>
-            <div>leads closed by sales agent with their name : {closedLeads.map((lead)=> (<p key={lead._id}>{leadAgentName(lead.salesAgent)}</p>))}</div>
+            <div> leads closed by sales agent with their name : {closedLeads.map((lead)=> (<p key={lead._id}>{leadAgentName(lead.salesAgent)}</p>))}</div>
             </div>
         </div>
         </>
