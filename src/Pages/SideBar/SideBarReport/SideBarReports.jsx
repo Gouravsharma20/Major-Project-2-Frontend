@@ -64,7 +64,7 @@ export default function SideBarReport() {
                 </div>
 
                 <div className="col-9">
-                    <h2>Report overview</h2>
+                    <h2 className="pageHeading">Report overview</h2>
 
                     
 

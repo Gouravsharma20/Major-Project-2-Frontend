@@ -46,7 +46,7 @@ export default function SideBarSettings() {
                 <Link to={"/"}>Back to Dashboard</Link>
             </div>
             <div className="col main-home">
-                <h2>Settings</h2>
+                <h2 className="pageHeading">Settings</h2>
 
                 <div>
                     <label>
