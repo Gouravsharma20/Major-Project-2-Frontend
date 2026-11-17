@@ -1,5 +1,5 @@
 
-import logo from "../Assets/Anvaya-crm-logo.svg"
+import logo from "../Assets/anvaya-crm-logo.svg"
 
 export default function Navbar() {
   return (
