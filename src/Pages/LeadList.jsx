@@ -19,6 +19,7 @@ export default function LeadList({status}) {
         <h2>Source : {lead.source}</h2>
         <h2>Status : {lead.status}</h2>
         <h2>Priority : {lead.priority}</h2>
+        <hr/>
         </div>
         ))
     )

@@ -1,0 +1,40 @@
+
+
+.charts-grid {
+  display: grid ;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 16px;
+}
+
+.dataCard {
+  position: relative;
+  height: 320px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+.pageHeading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #202938;
+    border-left: 5px solid #3B82F6;
+    padding-left: 12px;
+    margin-bottom: 24px;
+}
+
+.pageHeading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #202938;
+    border-left: 5px solid #3B82F6;
+    padding-left: 12px;
+    margin-bottom: 24px;
+}
+
+.pageHeading span {
+    color: #3B82F6;
+}

@@ -1,0 +1,76 @@
+
+.sideBar {
+    margin: 20px;
+}
+
+
+.leadContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 2px;
+    cursor: pointer;
+    
+}
+
+.sideBarButton {
+    display : 'flex';
+    margin:"2px";
+    align-items: center;
+    border: none;
+    gap:"20px"
+    
+}
+
+.leadContainer:hover .sideBarButton {
+    color:#3175FB;
+    background-color: #E6F0FD;
+}
+
+.sideBarButton {
+    background-color: "#E6F0FD";
+    border-radius: 20px;
+    padding: 10px 88px;
+    cursor: "pointer" ;
+    color:"black" ;
+    margin:"15px"
+}
+
+.leadStyle {
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.leadStyle:hover {
+    background: #2279FE;
+    padding: 12px 22px;
+}
+
+.quickFilterLead{
+    border-radius: 10px;
+    margin: 15px;
+    padding: 5px 25px;
+}
+
+.quickFilterLead:hover {
+    background-color: #71a1e8;
+}
+
+
+
+.filterQnt {
+    font-size: 30px;
+}
+
+.defaultButton {
+    padding: 10px 45px;
+    background-color: #2279FE;
+    border-radius: 10px;
+    color: white;
+}
+
+.defaultButton:hover {
+    background-color: #0a5edb;
+    color: wheat;
+}
+

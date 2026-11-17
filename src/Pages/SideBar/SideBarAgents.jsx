@@ -1,43 +1,90 @@
-import {useNavigate} from 'react-router-dom'
-
-
-import { useContext } from "react"
+import { useState, useEffect, useContext } from "react"
+import { Link ,useParams} from "react-router-dom"
 import LeadContext from "../../Context/LeadContext"
 
-import { Link } from "react-router-dom"
-
-
 export default function SideBarAgents() {
-    const navigate = useNavigate()
-    const {salesAgentLoading,salesAgent} = useContext(LeadContext)
+    const { salesAgentLoading, salesAgent } = useContext(LeadContext)
 
-    console.log(salesAgent)
+    const [selectedAgent, setSelectedAgent] = useState(null)
+    const [agentLeads, setAgentLeads] = useState([])
+    const [agentLeadsLoading, setAgentLeadsLoading] = useState(false)
 
-    if (salesAgentLoading) return <h2>loading sales data ...</h2>
+    useEffect(() => {
+        if (!selectedAgent) return
 
-    if (salesAgent.length === 0 ) {
-        return <h2>No sales agent Found</h2>
-    }
-    return (
-        <div>
-            <div className="row">
-            <div className="col-3 left-sidebar">
-                <h2>sidebar</h2>
-                <Link to={"/"}>Back to Dashbaord</Link>
-            </div>
-
-            <div>
-                <h2>Sales Agent List</h2>
-            {salesAgent && salesAgent.map((agent)=>{
-                return (
-                    <div key={agent._id}>
-                        <div>Agent: [{agent.name}] - [{agent.email}]</div>
-                    </div>
+        async function fetchAgentLeads() {
+            setAgentLeadsLoading(true)
+            try {
+                const res = await fetch(
+                    `https://major-project-2-backend-ecru.vercel.app/leads/agent/${selectedAgent._id}`
                 )
-            })}
-            <button onClick={()=>navigate("/agent/addAgent")}>Add new Agent</button>
+                if (res.ok) {
+                    const json = await res.json()
+                    setAgentLeads(json.data || [])
+                } else {
+                    setAgentLeads([])
+                }
+            } catch (err) {
+                console.log("error fetching agent leads", err)
+                setAgentLeads([])
+            } finally {
+                setAgentLeadsLoading(false)
+            }
+        }
+        fetchAgentLeads()
+    }, [selectedAgent])
+
+    if (salesAgentLoading) return <h2>loading sales agent data ...</h2>
+    if (salesAgent.length === 0) return <h2>No sales agent Found</h2>
+
+    return (
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-3 left-sidebar">
+                    <h2>sidebar</h2>
+                    <Link to="/">Back to Dashboard</Link>
+                </div>
+
+                <div className="col-9">
+                    <div className="table-responsive">
+                        <table className="table table-hover table-bordered align-middle">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Joining Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {salesAgent.map((item, index) => (
+                                    <tr key={item._id}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.email}</td>
+                                        <td>
+                                            {new Date(item.createdAt).toLocaleString("en-IN", {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                            })}
+                                        </td>
+                                        <td>
+                                            <Link to={`/agent/${item._id}`} className="btn btn-sm btn-primary">
+                                            View leads
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>                    
+                </div>
             </div>
         </div>
-    </div>
     )
 }

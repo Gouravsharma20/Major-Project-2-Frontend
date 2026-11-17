@@ -1,4 +1,5 @@
 import { useState } from "react"
+import {Link} from "react-router-dom"
 
 import { useContext } from "react";
 import LeadContext from "../Context/LeadContext";
@@ -62,7 +63,14 @@ export default function AddagentForm() {
 
 
     return (
-        <div>
+        <div className="row container-fluid">
+            <div className="col-3 left-sidebar">
+                <h2>sidebar</h2>
+                <Link to={"/"}>Back to Dashbaord</Link>
+            </div>
+
+            <div className="col-9">
+
             <div>Agent Name : <input
             type="text"
             placeholder="agent name"
@@ -76,7 +84,12 @@ export default function AddagentForm() {
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
             /></div>
-            <button onClick={handleSubmit}>Add agent</button>
+            <button className="btn btn-sm defaultButton" onClick={handleSubmit}>Add agent</button>
+
+            </div>
+
+            
+            
         </div>
     )
     

@@ -40,7 +40,7 @@ export default function SideBarSettings() {
     const [defaultPriority, setDefaultPriority] = useState("Medium")
 
     return (
-        <div className="row">
+        <div className="row container-fluid">
             <div className="col-3 left-sidebar">
                 <h2>sidebar</h2>
                 <Link to={"/"}>Back to Dashboard</Link>
@@ -76,7 +76,7 @@ export default function SideBarSettings() {
                     </select>
                 </div>
 
-                <button className="btn-sm">Save Settings</button>
+                <button className="btn btn-sm defaultButton">Save Settings</button>
             </div>
         </div>
     )

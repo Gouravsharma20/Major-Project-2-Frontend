@@ -89,7 +89,7 @@ export default function LeadForm() {
 
     
     return (
-        <div className="row">
+        <div className="row container-fluid">
             <div className="col-3 left-sidebar">
                 <h2>sidebar</h2>
                 <Link to={"/"}>Back to Dashbaord</Link>
@@ -141,7 +141,7 @@ export default function LeadForm() {
 
                 <h4>Time to Close : <input type="text" placeholder="Time to close" value={timeToClose} onChange={(e)=>settimeToClose(e.target.value)}/></h4>
                 <hr/>
-                 <button onClick={addNewLeadHandeler} className="btn-sm" disabled={leadFormLoading}>
+                 <button onClick={addNewLeadHandeler} className="btn btn-sm defaultButton" disabled={leadFormLoading}>
                 {leadFormLoading ? "Adding..." : "Add lead details"}
             </button>
             </div>

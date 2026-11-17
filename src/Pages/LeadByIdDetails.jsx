@@ -158,7 +158,7 @@ export default function LeadByIdDetails() {
 
     return (
         <>
-            <div className="row">
+            <div className="row container-fluid">
             <div className="col-3 left-sidebar">
                 <h2>sidebar</h2>
                 <Link to={"/"}>Back to Dashbaord</Link>

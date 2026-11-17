@@ -8,7 +8,7 @@ import LeadContext from './Context/LeadContext';
 
 import { BrowserRouter,Routes,Route} from "react-router-dom"
 
-import Home from './Pages/Home';
+import Home from './Pages/Home/Home';
 
 import SideBarLeads from './Pages/SideBar/SideBarLeads';
 
@@ -16,13 +16,23 @@ import SideBarSales from './Pages/SideBar/SideBarSales';
 
 import SideBarAgents from './Pages/SideBar/SideBarAgents'
 
-import SideBarReports from './Pages/SideBar/SideBarReports'
+import SideBarReports from './Pages/SideBar/SideBarReport/SideBarReports'
 
 import SideBarSettings from './Pages/SideBar/SideBarSettings'
 
 import LeadByIdDetails from './Pages/LeadByIdDetails'
 
 import AddagentForm from './Pages/addAgentForm';
+
+import QualifiedLead from './Pages/QualifiedLead';
+
+import ProposalSent from './Pages/ProposalSent'
+
+import GetAgentById from './Pages/GetAgentById';
+
+
+
+
 
 
 import Navbar from './Components/Navbar'
@@ -32,6 +42,12 @@ import LeadForm from './Pages/LeadForm';
 import NewLead from './Pages/NewLead';
 
 import ContractedLead from './Pages/ContractedLead';
+import ClosedLeads from './Pages/ClosedLeads';
+import LeadsInPipeline from './Pages/LeadsInPipeline'
+import LeadClosedBySalesAgent from './Pages/LeadClosedBySalesAgent';
+import AllLeadsType from './Pages/AllLeadsType';
+
+
 // import AllLeads from './Pages/SideBar/SideBarLeads';
 
 
@@ -187,7 +203,8 @@ function updateLeadInList(updatedLead) {
       updateLeadInList,
       setSalesAgent,
       setSalesLoading,
-      addLeadToList
+      addLeadToList,
+      setSalesAgentLoading
       }}>
       <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">
@@ -199,17 +216,22 @@ function updateLeadInList(updatedLead) {
         <Route path='/LeadForm' element={<LeadForm/>}/>
         <Route path='/newLeads' element={<NewLead/>} />
         <Route path='/contractedLeads' element={<ContractedLead/>}/>
+        <Route path='/qualifiedLeads' element={<QualifiedLead/>} />
+        <Route path='/proposalSent' element={<ProposalSent/>} />
         {/* <Route path='/newLeads' element={<NewLead/>} />
-        <Route path='/newLeads' element={<NewLead/>} />
-        <Route path='/newLeads' element={<NewLead/>} />
-        <Route path='/newLeads' element={<NewLead/>} /> */}
+        <Route path='/newLeads' element={<NewLead/>} />  */}
         <Route path='/allLeads' element={<SideBarLeads/>}/>
         <Route path='/leadById/:id' element={<LeadByIdDetails/>}/>
         <Route path='/sales' element={<SideBarSales/>}/>
         <Route path='/agents' element={<SideBarAgents/>}/>
         <Route path='/agent/addAgent' element={<AddagentForm/>}/>
+        <Route path='/agent/:agentId' element={<GetAgentById/>}/>
         <Route path='/reports' element={<SideBarReports/>}/>
         <Route path='/settings' element={<SideBarSettings/>}/>
+        <Route path='/leads/closedLeads' element={<ClosedLeads/>}/>
+        <Route path='/leads/leadInPipeline' element={<LeadsInPipeline/>}/>
+        <Route path='/leads/leadsClosedBySalesAgent' element={<LeadClosedBySalesAgent/>}/>
+        <Route path='/leads/allLeadsType' element={<AllLeadsType/>} />
       </Routes>
       </main>
       <Footer/>
