@@ -2,6 +2,8 @@ import { useContext } from "react"
 import { Link,Navigate,useNavigate } from "react-router-dom"
 import LeadContext from "../../../Context/LeadContext"
 
+import BackLink from "../../../Components/BackLink"
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -59,16 +61,13 @@ export default function SideBarReport() {
             <div className="row">
 
                 <div className="col-3 left-sidebar">
-                    <h2>sidebar</h2>
-                    <Link to="/">Back to Dashboard</Link>
+                    <div className="sidebarInner">
+                        <BackLink />
+                    </div>
                 </div>
 
                 <div className="col-9">
                     <h2 className="pageHeading">Report overview</h2>
-
-                    
-
-
                     <div className="charts-grid" style={{ paddingBottom: 0 }}>
 
     <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>

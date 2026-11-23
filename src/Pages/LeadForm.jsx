@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { toast,ToastContainer } from "react-toastify";
 import LeadContext from "../Context/LeadContext";
+import BackLink from "./../Components/BackLink"
 
 import { useNavigate } from "react-router-dom";
 
@@ -27,12 +28,8 @@ async function addLead(leadData) {
 export default function LeadForm() {
     const navigate = useNavigate()
     const {salesAgent:salesAgentList,salesAgentLoading,addLeadToList} = useContext(LeadContext)
-    // const [lead,setLead] = useState(null)
-    // use lead form the context
     const [leadFormLoading,setLeadFormLeading] = useState(false)
     const [leadName,setLeadName] = useState("")
-    // const [salesAgent,setSalesAgent] = useState("")
-    // const [leadSource,setLeadSource] = useState("")
     const [selectSalesAgent,setSelectedSalesAgent] = useState("")
     const [leadSource,setLeadSource] = useState("")
     const [leadStatus,setLeadStatus] = useState("")
@@ -72,13 +69,6 @@ export default function LeadForm() {
         }
     }
 
-    
-    // const salesAgentNames = salesAgent.map((agent)=>{
-    //     return (
-    //         <div>agent name : {agent.name}</div>
-    //     )
-    // })
-
     const salesAgentOptions = salesAgentList.map((agent) => (
         <option key={agent._id} value={agent._id}>{agent.name}</option>
     ));
@@ -91,14 +81,15 @@ export default function LeadForm() {
     return (
         <div className="row container-fluid">
             <div className="col-3 left-sidebar">
-                <h2>sidebar</h2>
-                <Link to={"/"}>Back to Dashbaord</Link>
+                <div className="sidebarInner">
+                    <BackLink />
+                </div>
             </div>
             <div className="col main-home">
-                <h2>Lead details</h2>
-                <h4>Lead name : <input type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} />
+                <h2 style={{textAlign:"center",marginTop:"6px"}}>Lead details</h2>
+                <h4>Lead name : <input className="defaultInputBox" placeholder="Lead Name" type="text" value={leadName} onChange={(e) => setLeadName(e.target.value)} />
                 </h4>
-                <h4>Sales Agent : <select value={selectSalesAgent} onChange={(e)=>setSelectedSalesAgent(e.target.value)}>
+                <h4>Sales Agent : <select className="defaultInputBox" value={selectSalesAgent} onChange={(e)=>setSelectedSalesAgent(e.target.value)}>
                     <option value="" disabled>select sales agaent</option>
                     {salesAgentLoading? (
                         <option disabled>loading agents...</option>
@@ -109,7 +100,7 @@ export default function LeadForm() {
                     </select>
 
                 </h4>
-                <h4>Lead Source : <select  value={leadSource} onChange={(e)=>setLeadSource(e.target.value)}>
+                <h4>Lead Source : <select className="defaultInputBox"  value={leadSource} onChange={(e)=>setLeadSource(e.target.value)}>
                     <option value="" disabled>select lead source</option>
                     <option value="Website">Website</option>
                     <option value="Cold Call">Cold Call</option>
@@ -120,7 +111,7 @@ export default function LeadForm() {
                 </h4>
 
 
-                <h4>Lead Status : <select value={leadStatus} onChange={(e)=>setLeadStatus(e.target.value)}>
+                <h4>Lead Status : <select className="defaultInputBox" value={leadStatus} onChange={(e)=>setLeadStatus(e.target.value)}>
                     <option value="" disabled>Select lead status</option>
                     <option value="New">New</option>
                     <option value="Contacted">Contacted</option>
@@ -131,7 +122,7 @@ export default function LeadForm() {
 
 
 
-                <h4>Priority : <select value={leadPriority} onChange={(e)=>setLeadPriority(e.target.value)}>
+                <h4>Priority : <select className="defaultInputBox" value={leadPriority} onChange={(e)=>setLeadPriority(e.target.value)}>
                     <option value="" disabled>Select lead priority</option>
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -139,7 +130,7 @@ export default function LeadForm() {
                 </select></h4>
 
 
-                <h4>Time to Close : <input type="text" placeholder="Time to close" value={timeToClose} onChange={(e)=>settimeToClose(e.target.value)}/></h4>
+                <h4>Time to Close : <input className="defaultInputBox" type="text" placeholder="Time to Close" value={timeToClose} onChange={(e)=>settimeToClose(e.target.value)}/></h4>
                 <hr/>
                  <button onClick={addNewLeadHandeler} className="btn btn-sm defaultButton" disabled={leadFormLoading}>
                 {leadFormLoading ? "Adding..." : "Add lead details"}

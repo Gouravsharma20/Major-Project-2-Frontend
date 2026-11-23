@@ -2,6 +2,8 @@ import { useContext } from "react"
 import { Link } from "react-router-dom"
 import LeadContext from "../Context/LeadContext"
 
+import BackLink from "../Components/BackLink"
+
 export default function ClosedLeads() {
     const { lead = [], salesAgent = [] } = useContext(LeadContext)
 
@@ -17,8 +19,9 @@ export default function ClosedLeads() {
         <div className="container-fluid">
             <div className="row">
                 <div className="col-3 left-sidebar">
-                    <h2>sidebar</h2>
-                    <Link to="/reports">Back to Reports</Link>
+                     <div className="sidebarInner">
+                        <BackLink />
+                    </div>
                 </div>
 
                 <div className="col-9">

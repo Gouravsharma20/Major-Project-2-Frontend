@@ -5,6 +5,8 @@ import { useNavigate, useParams,Link } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import LeadContext from "../Context/LeadContext"
 
+import BackLink from "../Components/BackLink"
+
 
 
 export default function  GetAgentById() {
@@ -46,8 +48,9 @@ export default function  GetAgentById() {
         <div className="container-fluid">
             <div className="row">
                 <div className="col-3 left-sidebar">
-                    <h2>Sidebar</h2>
-                    <Link to="/agents">Back to Agents</Link>
+                    <div className="sidebarInner">
+                        <BackLink />
+                    </div>
                 </div>
 
                 <div className="col-9">

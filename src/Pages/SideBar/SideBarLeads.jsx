@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import LeadContext from "../../Context/LeadContext"
+import BackLink from "../../Components/BackLink"
 
 export default function SideBarLeads() {
     const { lead } = useContext(LeadContext)
@@ -14,8 +15,9 @@ export default function SideBarLeads() {
             <div className="row">
 
                 <div className="col-3 left-sidebar">
-                    <h2>Sidebar</h2>
-                    <Link to="/">Back to Dashboard</Link>
+                    <div className="sidebarInner">
+                        <BackLink />
+                    </div>
                 </div>
 
                 <div className="col-9">

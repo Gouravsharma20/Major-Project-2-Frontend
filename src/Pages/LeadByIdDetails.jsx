@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect,useContext } from 'react'
 import { Link } from "react-router-dom";
 
+import BackLink from '../Components/BackLink';
+
 import {toast} from 'react-toastify'
 
 
@@ -153,18 +155,31 @@ export default function LeadByIdDetails() {
         
     }
 
-    if (loading) return <h2>Loading...</h2>
-    if (error || !lead) return <h2>Lead not found</h2>
+    if (loading) return (
+        <div className="loadingStyle">
+            <div className="loadingSpinner"></div>
+            <p className="loadingText">Loading lead details...</p>
+        </div>
+    )
+    if (error || !lead) return (<div className="errorStyle">
+            <div className="errorIcon">!</div>
+            <h2 className="errorTitle">Lead not found</h2>
+            <p className="errorText">We couldn't load this lead. It may have been deleted or the server is unavailable.</p>
+            <Link to="/" className="errorButton" style={{ textDecoration: "none" }}>
+                Back to Dashboard
+            </Link>
+        </div>)
 
     return (
         <>
             <div className="row container-fluid">
             <div className="col-3 left-sidebar">
-                <h2>sidebar</h2>
-                <Link to={"/"}>Back to Dashbaord</Link>
+                <div className="sidebarInner">
+                    <BackLink />
+                </div>
             </div>
             <div className="col main-home">
-                <h2>Lead details</h2>
+                <h2 style={{textAlign:"center",marginTop:"6px"}}> Lead details</h2>
 
                 {!isEditing ? (
                     <>
@@ -176,7 +191,7 @@ export default function LeadByIdDetails() {
                     <h4>Time to Close : {lead.timeToClose}</h4>
                 <hr/>
 
-                <button onClick={handleStartEdit} className="btn-sm">
+                <button className = "defaultButton" onClick={handleStartEdit}>
                     Edit lead details
                 </button>
 
@@ -184,16 +199,16 @@ export default function LeadByIdDetails() {
                 ): (
                     <div className='d-flex flex-column edit-lead-form'>
                         <label>
-                            Name : <input type='text' name='name' value={editLead.name} onChange={handleEditChange} />
+                            Name : <input className="defaultInputBox" type='text' name='name' value={editLead.name} onChange={handleEditChange} />
                         </label>
 
                         <label>
-                            Sales Agent : <input type='text' name='salesAgent' value={editLead.salesAgent} onChange={handleEditChange} />
+                            Sales Agent : <input className="defaultInputBox" type='text' name='salesAgent' value={editLead.salesAgent} onChange={handleEditChange} />
                         </label>
 
                         <label>
                             Source
-                            <select name="source" value={editLead.source} onChange={handleEditChange}>
+                            <select className="defaultInputBox" name="source" value={editLead.source} onChange={handleEditChange}>
                                 <option value="Website">Website</option>
                                 <option value="Referral">Referral</option>
                                 <option value="Cold Call">Cold Call</option>
@@ -205,7 +220,7 @@ export default function LeadByIdDetails() {
 
                         <label>
                             Status
-                            <select name="status" value={editLead.status} onChange={handleEditChange}>
+                            <select className="defaultInputBox" name="status" value={editLead.status} onChange={handleEditChange}>
                                 <option value="New">New</option>
                                 <option value="Contacted">Contacted</option>
                                 <option value="Qualified">Qualified</option>
@@ -217,7 +232,7 @@ export default function LeadByIdDetails() {
 
                         <label>
                             Priority
-                            <select name="priority" value={editLead.priority} onChange={handleEditChange}>
+                            <select className="defaultInputBox" name="priority" value={editLead.priority} onChange={handleEditChange}>
                                 <option value="High">High</option>
                                 <option value="Medium">Medium</option>
                                 <option value="Low">Low</option>
@@ -226,7 +241,7 @@ export default function LeadByIdDetails() {
 
                         <label>
                             Time to Close (days)
-                            <input
+                            <input  className="defaultInputBox"
                                 type="number"
                                 name="timeToClose"
                                 value={editLead.timeToClose}
@@ -236,22 +251,16 @@ export default function LeadByIdDetails() {
 
                         {saveError && <p className='text-danger'>Failed to save. Try again.</p>}
 
-                        <div>
-                            <button onClick={handleEditLead} disabled={saveLoading} className='btn-sm'>
+                        <div className="d-flex gap-2 mb-3 mt-3">
+                            <button className="btn btn-sm defaultButton" onClick={handleEditLead} disabled={saveLoading}>
                                 {saveLoading ? "saving ..." : "Save"}
                             </button>
-                             <button onClick={handleCancelEdit} className="btn-sm">
+                             <button className="btn btn-sm defaultButton" onClick={handleCancelEdit}>
                                 Cancel
                             </button>
                         </div>
-
-
                     </div>
                 )}
-
-
-                
-
             <hr/>
 
                 <h2>Common Section</h2>
@@ -268,8 +277,8 @@ export default function LeadByIdDetails() {
             <hr/>
 
             <div className="d-flex flex-column">
-                <input type="text" placeholder="add new comment" value={comment} onChange={(e)=>setComment(e.target.value)} />
-                <button
+                <input className='defaultInputBox' type="text" placeholder="add new comment" value={comment} onChange={(e)=>setComment(e.target.value)} />
+                <button style={{marginTop:"20px"}} className='defaultButton'
                 disabled={commentLoading || !comment.trim()}
                 onClick={()=>addComment({comment:comment.trim(),author:lead.salesAgent,
                 })

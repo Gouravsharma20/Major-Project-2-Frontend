@@ -35,11 +35,25 @@ export default function Home() {
     const navigate = useNavigate()
 
     if (leadLoading) {
-        return <h2>loading leads ...</h2>
+        return (
+        <div className="loadingStyle">
+            <div className="loadingSpinner"></div>
+            <p className="loadingText">Loading leads...</p>
+        </div>
+    )
     }
 
     if (leadError) {
-        return <h2>error loading leads</h2>
+        return (
+        <div className="errorStyle">
+            <div className="errorIcon">!</div>
+            <h2 className="errorTitle">Couldn't load leads</h2>
+            <p className="errorText">{leadError}</p>
+            <button onClick={()=>{navigate("/")}} className="errorButton">
+                Try again
+            </button>
+        </div>
+    )
     }
 
     function goToContractedLead() {
@@ -63,78 +77,116 @@ export default function Home() {
         navigate("/SideBarLeads")
     }
 
+    const topNewLeads = lead.filter((l) => l.status === "New").slice(0, 3);
+
     return (
         <div className='container-fluid'>
             <div className="row">
                 <div className="col-3 left-sidebar">
                         <div className='sideBar'>
-                            <div className="leadContainer">
-                                <img src={SideBarAgents} height="45" />
-                                <button className='sideBarButton' onClick={()=>{navigate("/allLeads")}}>Leads</button>
+                            <div className="leadContainer leads">
+                                <img style={{backgroundColor:"#E6F0FD", borderRadius:"50%", padding:"8px"}} src={SideBarAgents}/>
+                                <button className='sideBarButton' onClick={()=>{navigate("/allLeads")}}> Leads</button>
                             </div>
 
-                            <div className="leadContainer">
-                                <img src={SideBarLeads} height="45" />
+                            <hr/>
+
+                            <div className="leadContainer sales">
+                                <img style={{backgroundColor:"#EEE7FD", borderRadius:"50%", padding:"8px"}} src={SideBarLeads} height="45" />
                                 <button className='sideBarButton' onClick={()=>{navigate("/sales")}}>Sales</button>
                             </div>
 
+                            <hr/>
 
-                            <div className="leadContainer">
-                                <img src={SideBarReport} height="45" />
+
+                            <div className="leadContainer agents">
+                                <img style={{backgroundColor:"#E2F5E5", borderRadius:"50%", padding:"8px"}} src={SideBarReport} height="45" />
                                 <button className='sideBarButton' onClick={()=>{navigate("/agents")}}>Agents</button>
                             </div>
 
+                            <hr/>
 
-                            <div className="leadContainer">
-                                <img src={SideBarSales} height="45" />
+
+                            <div className="leadContainer reports">
+                                <img style={{backgroundColor:"#FEEEE1", borderRadius:"50%", padding:"8px"}} src={SideBarSales} height="45" />
                                 <button className='sideBarButton' onClick={()=>{navigate("/reports")}}>Reports</button>
                             </div>
 
+                            <hr/>
 
-                            <div className="leadContainer">
-                                <img src={SideBarSettings} height="45" />
+
+                            <div className="leadContainer settings">
+                                <img style={{backgroundColor:"#E1E5F8", borderRadius:"50%", padding:"8px"}} src={SideBarSettings} height="45" />
                                 <button className='sideBarButton' onClick={()=>{navigate("/settings")}}>Settings</button>
                             </div>
+
+                            <hr/>
+
+                            
                         </div>
                 </div>
                 <div className="col-9 main-home" style={{ minWidth: 0 }}>
-                    <div style={{display: "inline-block", color:"black", fontSize:"42px", fontWeight:"bold"}}>Anvaya CRM Dashboard</div>
-                    <div style={{color : "#606C86" , fontSize:"16px"}}>Manage your leads, track progress and grow your bussiness.</div>
-                        <div className="overflow-auto">
-                        <div className='d-flex flex-nowrap gap-3'>
-                            {lead && lead.map((l,index)=>{
-                            return (
-                                <div className='flex-shrink-0' key={l._id}>
-                                {/* if (leadLoading) return <h2>loading all leads ...</h2> */}
+                    <h1 style={{display: "block", color:"black", fontSize:"42px", fontWeight:"bold",lineHeight:"1.1", marginTop:"10px",marginBottom:"0px"}}>Anvaya CRM Dashboard</h1>
+                    <p style={{color : "#606C86" , fontSize:"16px",marginBottom:"10px"}}>Manage your leads, track progress and grow your bussiness.</p>
 
 
-                                <button className='leadStyle' onClick={()=>navigate(`/leadById/${l._id}`)}>Lead {index + 1}</button>
+                    <div className="card border-0 shadow-sm mb-3">
+  <div className="card-body">
+    <div className="d-flex justify-content-between align-items-center mb-2">
+      <h6 className="mb-0">New leads</h6>
+      <button
+        className="btn btn-sm btn-outline-secondary"
+        onClick={() => navigate("/allLeads")}
+      >
+        Show all leads →
+      </button>
+    </div>
+
+    {topNewLeads.length === 0 ? (
+      <p className="text-muted small mb-0">No new leads right now.</p>
+    ) : (
+      <ul className="list-group list-group-flush">
+        {topNewLeads.map((l) => (
+          <li
+            key={l._id}
+            className="list-group-item d-flex justify-content-between align-items-center px-0"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/leadById/${l._id}`)}
+          >
+            <span>{l.name}</span>
+            <span className="badge rounded-pill text-bg-primary">New</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
 
 
-                                </div>
-                            )
-                        })}
-                        </div>
-                    </div>
                     
                         
                     <div>
                         <h2 style={{border:"2px" , display: "inline-block", padding:"8px", color:"blue"}}>Lead status</h2>
-                        <div><img src={newLeadLogo}/> New:[{lead.filter((lead)=>lead.status === "New").length}] Leads</div>
-                        <div><img src={contactedLead}/> Contacted:[{lead.filter((lead)=>lead.status === "Contacted").length}] Leads</div>
-                        <div><img src={qualified}/> Qualified:[{lead.filter((lead)=>lead.status === "Qualified").length}] Leads</div>
-                        <div><img src={proposalSent}/> Proposal Sent:[{lead.filter((lead)=>lead.status === "Proposal Sent").length}] Leads</div>
-                        <div><img src={closedLead}/> Closed:[{lead.filter((lead)=>lead.status === "Closed").length}] Leads</div>
+                        <div className='leadStatusRow new'><img src={newLeadLogo}/> New:<b> {lead.filter((lead)=>lead.status === "New").length}</b> Leads</div>
+                        <hr/>
+                        <div className='leadStatusRow contacted' style={{cursor:"pointer"}}><img src={contactedLead}/> Contacted:<b> {lead.filter((lead)=>lead.status === "Contacted").length}</b> Leads</div>
+                        <hr/>
+                        <div className='leadStatusRow qualified' style={{cursor:"pointer"}}> <img src={qualified}/> Qualified:<b> {lead.filter((lead)=>lead.status === "Qualified").length}</b> Leads</div>
+                        <hr/>
+                        <div className='leadStatusRow proposalSent' style={{cursor:"pointer"}}><img src={proposalSent}/> Proposal Sent:<b> {lead.filter((lead)=>lead.status === "Proposal Sent").length}</b> Leads</div>
+                        <hr/>
+                        <div className='leadStatusRow closed' style={{cursor:"pointer"}}><img src={closedLead}/> Closed:<b> {lead.filter((lead)=>lead.status === "Closed").length}</b> Leads</div>
+                        <hr/>
                     </div>
                     <div>
                         <p style={{border:"2px", padding:"8px", color:"blue"}}>
                             <p>quick filter :</p>
                             <div>
-                                <button className='quickFilterLead' onClick={goToNewLead}><img className='filterLogo' src={newLeadLogo}/>New Leads <p className='filterQnt'>{lead.filter((lead)=>lead.status === "New").length}</p></button>
-                                <button className='quickFilterLead' onClick={goToContractedLead}><img className='filterLogo' src={contactedLead}/>Contracted <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Contacted").length}</p></button>
-                                <button className='quickFilterLead' onClick={goToQualifiedLead}><img className='filterLogo' src={qualified}/>Qualified <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Qualified").length}</p></button>
-                                <button className='quickFilterLead' onClick={goToProposalSentLead}><img className='filterLogo' src={proposalSent}/>Proposal Sent <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Proposal Sent").length}</p></button>
-                                <button className='quickFilterLead' onClick={goToClosedLead}><img className='filterLogo' src={closedLead}/>Closed <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Closed").length}</p></button>
+                                <button className='quickFilterLead new' onClick={goToNewLead}><img className='filterLogo' src={newLeadLogo}/>New Leads <p className='filterQnt'>{lead.filter((lead)=>lead.status === "New").length}</p></button>
+                                <button className='quickFilterLead contacted' onClick={goToContractedLead}><img className='filterLogo' src={contactedLead}/>Contracted <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Contacted").length}</p></button>
+                                <button className='quickFilterLead qualified' onClick={goToQualifiedLead}><img className='filterLogo' src={qualified}/>Qualified <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Qualified").length}</p></button>
+                                <button className='quickFilterLead proposalSent' onClick={goToProposalSentLead}><img className='filterLogo' src={proposalSent}/>Proposal Sent <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Proposal Sent").length}</p></button>
+                                <button className='quickFilterLead closed' onClick={goToClosedLead}><img className='filterLogo' src={closedLead}/>Closed <p className='filterQnt'>{lead.filter((lead)=>lead.status === "Closed").length}</p></button>
                             </div>
                             
                         </p>
@@ -154,11 +206,4 @@ export default function Home() {
     navigate("/newLeads")
     
 }
-
-
-
-
-
-
-
 }
